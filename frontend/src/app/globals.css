@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+   :root {
+      --background: 36, 100%, 97%;
+      --foreground: 0 0% 3.9%;
+      --card: 0 0% 96%;
+      --card-foreground: 0 0% 3.9%;
+      --popover: 0 0% 96%;
+      --popover-foreground: 0 0% 3.9%;
+      --absolute-white: 0, 0%, 100%;
+      --absolute-black: 0, 0%, 3%;
+      --primary: 35, 100%, 50%;
+      --orange-shade-50: 35, 100%, 50%;
+      --orange-shade-70: 35, 100%, 70%;
+      --orange-shade-75: 35, 100%, 75%;
+      --orange-shade-80: 35, 100%, 80%;
+      --orange-shade-90: 35, 100%, 90%;
+      --orange-shade-95: 35, 100%, 95%;
+      --orange-shade-97: 35, 100%, 97%;
+      --orange-shade-99: 35, 100%, 99%;
+
+      --primary-foreground: 0 0% 98%;
+      --secondary: 0, 0%, 100%;
+      --white-shade-90: 240, 6%, 90%;
+      --white-shade-95: 240, 8%, 95%;
+      --white-shade-97: 240, 7%, 97%;
+      --white-shade-99: 240, 20%, 99%;
+      --secondary-foreground: 0 0% 9%;
+      --gray-shade-10: 0, 0%, 10%;
+      --gray-shade-15: 0, 0%, 15%;
+      --gray-shade-20: 0, 0%, 20%;
+      --gray-shade-30: 0, 0%, 30%;
+      --gray-shade-35: 0, 0%, 35%;
+      --gray-shade-40: 0, 0%, 40%;
+      --gray-shade-60: 0, 0%, 60%;
+      --gray-shade-70: 0, 0%, 70%;
+      --border: 0 0% 89.8%;
+      --input: 0 0% 89.8%;
+      --ring: 0 0% 3.9%;
+      --chart-1: 12 76% 61%;
+      --chart-2: 173 58% 39%;
+      --chart-3: 197 37% 24%;
+      --chart-4: 43 74% 66%;
+      --chart-5: 27 87% 67%;
+      --radius: 0.5rem;
+      --sidebar-background: 0 0% 98%;
+      --sidebar-foreground: 240 5.3% 26.1%;
+      --sidebar-primary: 240 5.9% 10%;
+      --sidebar-primary-foreground: 0 0% 98%;
+      --sidebar-accent: 240 4.8% 95.9%;
+      --sidebar-accent-foreground: 240 5.9% 10%;
+      --sidebar-border: 220 13% 91%;
+      --sidebar-ring: 217.2 91.2% 59.8%;
+   }
+   .dark {
+      --background: 0 0% 3.9%;
+      --foreground: 0 0% 98%;
+      --card: 0 0% 3.9%;
+      --card-foreground: 0 0% 98%;
+      --popover: 0 0% 3.9%;
+      --popover-foreground: 0 0% 98%;
+      --primary: 0 0% 98%;
+      --primary-foreground: 0 0% 9%;
+      --secondary: 0 0% 14.9%;
+      --secondary-foreground: 0 0% 98%;
+      --muted: 0 0% 14.9%;
+      --muted-foreground: 0 0% 63.9%;
+      --accent: 0 0% 14.9%;
+      --accent-foreground: 0 0% 98%;
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 0% 98%;
+      --border: 0 0% 14.9%;
+      --input: 0 0% 14.9%;
+      --ring: 0 0% 83.1%;
+      --chart-1: 220 70% 50%;
+      --chart-2: 160 60% 45%;
+      --chart-3: 30 80% 55%;
+      --chart-4: 280 65% 60%;
+      --chart-5: 340 75% 55%;
+      --sidebar-background: 240 5.9% 10%;
+      --sidebar-foreground: 240 4.8% 95.9%;
+      --sidebar-primary: 224.3 76.3% 48%;
+      --sidebar-primary-foreground: 0 0% 100%;
+      --sidebar-accent: 240 3.7% 15.9%;
+      --sidebar-accent-foreground: 240 4.8% 95.9%;
+      --sidebar-border: 240 3.7% 15.9%;
+      --sidebar-ring: 217.2 91.2% 59.8%;
+   }
+}
+
+@layer base {
+   * {
+      @apply box-border border-border;
+   }
+
+   body {
+      @apply bg-background text-foreground font-geist-sans;
+   }
+
+   h1 {
+      @apply text-3xl sm:text-4xl md:text-5xl font-semibold sm:font-bold;
+   }
+   h2 {
+      @apply text-2xl sm:text-3xl md:text-4xl font-semibold sm:font-bold;
+   }
+
+   h3 {
+      @apply text-xl sm:text-2xl md:text-3xl font-medium sm:font-semibold;
+   }
+
+   h4 {
+      @apply text-lg sm:text-xl md:text-2xl font-medium sm:font-semibold;
+   }
+   h5 {
+      @apply text-base sm:text-lg md:text-xl font-medium sm:font-semibold;
+   }
+   h6 {
+      @apply text-base font-medium sm:font-semibold;
+   }
+}
+
+@layer components {
+   .ornament::after {
+      content: "";
+      position: absolute;
+      width: 91px;
+      height: 12px;
+      bottom: -10px;
+      right: 0;
+      z-index: -1;
+      transform: translate(-5px);
+      background-color: #ffc221;
+      -webkit-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-image: url("/illustration/headline-curve.svg");
+      mask-image: url("/illustration/headline-curve.svg");
+   }
+}
