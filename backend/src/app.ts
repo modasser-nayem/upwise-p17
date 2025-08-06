@@ -1,0 +1,33 @@
+import express, { Application } from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { routes } from "./routes";
+import notFoundRoute from "./middleware/notFoundRoute";
+import globalErrorHandler from "./middleware/globalErrorHandler";
+import { envConfig } from "./config";
+
+const app: Application = express();
+
+app.use(cookieParser());
+app.use(express.json());
+
+app.use(
+   cors({
+      origin: [envConfig.FRONTEND_URL, "http://localhost:3000"],
+      credentials: true,
+   })
+);
+
+app.use("/", (req, res) => {
+   res.send("Server is Running");
+});
+
+app.use("/api/v1", routes);
+
+//not found route handler
+app.use(notFoundRoute);
+
+//global error controller/ handler
+app.use(globalErrorHandler);
+
+export default app;
