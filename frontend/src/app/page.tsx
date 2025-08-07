@@ -1,17 +1,29 @@
-import React from "react";
-import AppLoading from "./loading";
+import Benefits from "@/components/landing/benefits";
+import Courses from "@/components/landing/courses";
+import FAQs from "@/components/landing/faqs";
+import HeroSection from "@/components/landing/hero-section";
+import HowItWorks from "@/components/landing/how-it-works";
+import Testimonials from "@/components/landing/testimonials";
 
-const page = () => {
+import Footer from "@/components/shared/footer";
+import GeometricBackground from "@/components/shared/geometric-background";
+
+import Navbar from "@/components/shared/navbar";
+
+export default function Home() {
    return (
-      <div className="h-screen flex items-center justify-center">
-         <h2 className="text-4xl w-auto">
-            Hello, Welcome to Upwise Learning Management System
-         </h2>
-         <div>
-            <AppLoading />
-         </div>
-      </div>
-   );
-};
+      <section>
+         <GeometricBackground>
+            <Navbar />
+            <HeroSection />
+         </GeometricBackground>
+         <Courses />
+         <HowItWorks />
+         <Benefits />
 
-export default page;
+         <Testimonials />
+         <FAQs />
+         <Footer />
+      </section>
+   );
+}
