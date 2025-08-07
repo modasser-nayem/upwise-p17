@@ -3,6 +3,7 @@ import { IUser } from "./user.interface";
 import { User } from "./user.model";
 import QueryBuilder from "../../lib/QueryBuilder";
 import { TQuery } from "../../type";
+import { Enrollment } from "../enrollment/enrollment.model";
 
 const getAllFromDB = async (query: TQuery) => {
    const res = new QueryBuilder(User.find({ isDeleted: false }), query)
@@ -48,6 +49,29 @@ const updateDoc = async (
    return res;
 };
 
+const updateRole = async (id: string, payload: { role: string }) => {
+   const user = await User.findById(id);
+
+   if (!user) {
+      throw new CustomError(404, "User not found!");
+   }
+
+   if (user.role === "instructor" && payload.role === "student") {
+      throw new CustomError(400, "Instructor can not be a student");
+   }
+
+   const findEnrollments = await Enrollment.findOne({ student: id });
+   if (findEnrollments) {
+      throw new CustomError(400, "Sorry, This user already enrolled a course!");
+   }
+   const res = await User.findByIdAndUpdate(
+      id,
+      { ...payload },
+      { new: true, runValidators: true }
+   ).select("name email role");
+   return res;
+};
+
 const getMyProfile = async (id: string) => {
    const user = await User.findById(id).select("name role avatar");
    if (!user) {
@@ -60,5 +84,6 @@ export const userServices = {
    getAllFromDB,
    getUserById,
    updateDoc,
+   updateRole,
    getMyProfile,
 };

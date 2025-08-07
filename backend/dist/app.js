@@ -17,9 +17,6 @@ app.use((0, cors_1.default)({
     origin: [config_1.envConfig.FRONTEND_URL, "http://localhost:3000"],
     credentials: true,
 }));
-app.use("/", (req, res) => {
-    res.send("Server is Running");
-});
 app.use("/api/v1", routes_1.routes);
 //not found route handler
 app.use(notFoundRoute_1.default);

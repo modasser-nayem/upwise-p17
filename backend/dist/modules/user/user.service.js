@@ -16,6 +16,7 @@ exports.userServices = void 0;
 const CustomError_1 = __importDefault(require("../../utils/CustomError"));
 const user_model_1 = require("./user.model");
 const QueryBuilder_1 = __importDefault(require("../../lib/QueryBuilder"));
+const enrollment_model_1 = require("../enrollment/enrollment.model");
 const getAllFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const res = new QueryBuilder_1.default(user_model_1.User.find({ isDeleted: false }), query)
         .search(["name", "email"])
@@ -44,6 +45,21 @@ const updateDoc = (id, payload) => __awaiter(void 0, void 0, void 0, function* (
     }
     return res;
 });
+const updateRole = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.findById(id);
+    if (!user) {
+        throw new CustomError_1.default(404, "User not found!");
+    }
+    if (user.role === "instructor" && payload.role === "student") {
+        throw new CustomError_1.default(400, "Instructor can not be a student");
+    }
+    const findEnrollments = yield enrollment_model_1.Enrollment.findOne({ student: id });
+    if (findEnrollments) {
+        throw new CustomError_1.default(400, "Sorry, This user already enrolled a course!");
+    }
+    const res = yield user_model_1.User.findByIdAndUpdate(id, Object.assign({}, payload), { new: true, runValidators: true }).select("name email role");
+    return res;
+});
 const getMyProfile = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.User.findById(id).select("name role avatar");
     if (!user) {
@@ -55,5 +71,6 @@ exports.userServices = {
     getAllFromDB,
     getUserById,
     updateDoc,
+    updateRole,
     getMyProfile,
 };

@@ -37,6 +37,17 @@ const updateDoc = asyncHandler(async (req: Request, res: Response) => {
    });
 });
 
+const updateRole = asyncHandler(async (req: Request, res: Response) => {
+   const { id } = req.params;
+   const result = await userServices.updateRole(id, req.body);
+
+   sendResponse(res, {
+      statusCode: 200,
+      message: "User role is updated successfully",
+      result: result,
+   });
+});
+
 const getMyProfile = asyncHandler(async (req: Request, res: Response) => {
    const user = req.user;
    const result = await userServices.getMyProfile(user?.id);
@@ -52,5 +63,6 @@ export const userController = {
    getAllFromDB,
    getUserById,
    updateDoc,
+   updateRole,
    getMyProfile,
 };

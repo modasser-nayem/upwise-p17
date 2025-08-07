@@ -43,6 +43,15 @@ const updateDoc = (0, asyncHandler_1.default)((req, res) => __awaiter(void 0, vo
         result: result,
     });
 }));
+const updateRole = (0, asyncHandler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield user_service_1.userServices.updateRole(id, req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "User role is updated successfully",
+        result: result,
+    });
+}));
 const getMyProfile = (0, asyncHandler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
     const result = yield user_service_1.userServices.getMyProfile(user === null || user === void 0 ? void 0 : user.id);
@@ -56,5 +65,6 @@ exports.userController = {
     getAllFromDB,
     getUserById,
     updateDoc,
+    updateRole,
     getMyProfile,
 };

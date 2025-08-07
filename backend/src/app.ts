@@ -18,10 +18,6 @@ app.use(
    })
 );
 
-app.use("/", (req, res) => {
-   res.send("Server is Running");
-});
-
 app.use("/api/v1", routes);
 
 //not found route handler
