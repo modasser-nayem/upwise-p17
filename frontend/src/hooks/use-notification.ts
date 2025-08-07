@@ -5,26 +5,26 @@ import { io, Socket } from "socket.io-client";
 let socket: Socket | null = null;
 
 export const useNotificationSocket = ({
-	userId,
-	onNewNotification,
+   userId,
+   onNewNotification,
 }: {
-	userId: string;
-	onNewNotification: () => void;
+   userId: string;
+   onNewNotification: () => void;
 }) => {
-	useEffect(() => {
-		if (!userId) return;
+   useEffect(() => {
+      if (!userId) return;
 
-		socket = io(config.backend_url, {
-			query: { userId },
-		});
+      socket = io(config.SERVER_URL, {
+         query: { userId },
+      });
 
-		socket.on("new-notification", () => {
-			console.log("🔔 New Notification Received");
-			onNewNotification();
-		});
+      socket.on("new-notification", () => {
+         console.log("🔔 New Notification Received");
+         onNewNotification();
+      });
 
-		return () => {
-			socket?.disconnect();
-		};
-	}, [userId, onNewNotification]);
+      return () => {
+         socket?.disconnect();
+      };
+   }, [userId, onNewNotification]);
 };

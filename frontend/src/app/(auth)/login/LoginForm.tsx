@@ -15,115 +15,124 @@ import { decodeToken } from "@/lib/decodeToken";
 import { useLoginToAccountMutation } from "@/redux/api/authApi";
 import ESInput from "@/components/form/ESInput";
 import { setCookie } from "@/actions/auth-action";
+import { config } from "@/config";
 
 // 👇 Add demo credentials here
 const demoUsers = {
-	student: {
-		email: "student@gmail.com",
-		password: "1234567",
-	},
-	instructor: {
-		email: "instructor@gmail.com",
-		password: "123456",
-	},
-	admin: {
-		email: "admin@gmail.com",
-		password: "123456",
-	},
+   student: {
+      email: "student1@gmail.com",
+      password: "1234567",
+   },
+   instructor: {
+      email: "instructor1@gmail.com",
+      password: "123456",
+   },
+   admin: {
+      email: "admin1@gmail.com",
+      password: "123456",
+   },
 };
 export default function LoginForm() {
-	const dispatch = useAppDispatch();
-	const router = useRouter();
+   const dispatch = useAppDispatch();
+   const router = useRouter();
 
-	const [loginToAccount, { isLoading }] = useLoginToAccountMutation();
+   const [loginToAccount, { isLoading }] = useLoginToAccountMutation();
 
-	const form = useForm<z.infer<typeof loginSchema>>({
-		resolver: zodResolver(loginSchema),
-		defaultValues: {
-			email: "",
-			password: "",
-		},
-	});
+   const form = useForm<z.infer<typeof loginSchema>>({
+      resolver: zodResolver(loginSchema),
+      defaultValues: {
+         email: "",
+         password: "",
+      },
+   });
 
-	const handleLogin = async (values: z.infer<typeof loginSchema>) => {
-		try {
-			const res = await loginToAccount(values).unwrap(); // server action
+   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
+      try {
+         const res = await loginToAccount(values).unwrap(); // server action
 
-			if (res?.success) {
-				toast.success("Logged in successfully");
-				await setCookie(res?.result?.accessToken);
-				const user = decodeToken(res?.result?.accessToken);
+         if (res?.success) {
+            toast.success("Logged in successfully");
+            await setCookie(res?.result?.accessToken);
+            const user = decodeToken(res?.result?.accessToken);
 
-				dispatch(
-					setCredentials({
-						user: user,
-						token: res?.result?.accessToken,
-					})
-				);
-				router.push(`/${user?.role}`);
-			} else {
-				toast.error("Invalid credentials");
-			}
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} catch (error: any) {
-			toast(error?.data?.message);
-			console.log(error);
-		}
-	};
+            dispatch(
+               setCredentials({
+                  user: user,
+                  token: res?.result?.accessToken,
+               })
+            );
+            router.push(`/${user?.role}`);
+         } else {
+            toast.error("Invalid credentials");
+         }
+         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+         toast(error?.data?.message || "Something Went wrong!");
+         console.log(error);
+      }
+   };
 
-	const handleDemoLogin = async (role: keyof typeof demoUsers) => {
-		const creds = demoUsers[role];
-		form.setValue("email", creds.email);
-		form.setValue("password", creds.password);
+   const handleDemoLogin = async (role: keyof typeof demoUsers) => {
+      const creds = demoUsers[role];
+      form.setValue("email", creds.email);
+      form.setValue("password", creds.password);
 
-		// Submit login immediately
-		handleLogin(creds);
-	};
-	return (
-		<>
-			{/** Demo buttons */}
-			<div className="mt-6">
-				<p className="mb-2 font-medium">Login as demo user:</p>
-				<div className="flex items-center justify-between flex-wrap ">
-					{(["student", "instructor", "admin"] as const).map(
-						(role) => (
-							<Button
-								key={role}
-								variant="outline"
-								onClick={() => handleDemoLogin(role)}
-								disabled={isLoading}
-							>
-								{role.charAt(0).toUpperCase() + role.slice(1)}
-							</Button>
-						)
-					)}
-				</div>
-			</div>
+      // Submit login immediately
+      handleLogin(creds);
+   };
 
-			{/** Login form */}
-			<Form {...form}>
-				<form
-					onSubmit={form.handleSubmit(handleLogin)}
-					className="space-y-5"
-				>
-					<ESInput
-						form={form}
-						name="email"
-						label="Email"
-						type="email"
-					/>
-					<ESInput
-						form={form}
-						name="password"
-						label="Password"
-						type="password"
-					/>
+   console.log({ url: config.SERVER_URL });
+   return (
+      <>
+         {/** Demo buttons */}
+         <div className="mt-6">
+            <div className="border-2 p-4 rounded-md">
+               <p className="mb-2 font-medium text-center">Demo Login</p>
+               <div className="flex items-center justify-between flex-wrap">
+                  {(["student", "instructor", "admin"] as const).map((role) => (
+                     <Button
+                        key={role}
+                        variant="outline"
+                        onClick={() => handleDemoLogin(role)}
+                        disabled={isLoading}
+                        className="hover:bg-primary hover:text-white"
+                     >
+                        {role.charAt(0).toUpperCase() + role.slice(1)}
+                     </Button>
+                  ))}
+               </div>
+            </div>
+         </div>
+         <div className="py-2"></div>
 
-					<Button type="submit" disabled={isLoading}>
-						Login
-					</Button>
-				</form>
-			</Form>
-		</>
-	);
+         {/** Login form */}
+         <Form {...form}>
+            <form
+               onSubmit={form.handleSubmit(handleLogin)}
+               className="space-y-5"
+            >
+               <ESInput
+                  form={form}
+                  name="email"
+                  label="Email"
+                  type="email"
+               />
+               <ESInput
+                  form={form}
+                  name="password"
+                  label="Password"
+                  type="password"
+               />
+
+               <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className=""
+               >
+                  Login
+               </Button>
+            </form>
+         </Form>
+      </>
+   );
 }
