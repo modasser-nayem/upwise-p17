@@ -8,7 +8,11 @@ const userSocketMap = new Map<string, string>(); // userId <-> socketId
 export const initSocket = (server: HTTPServer) => {
    io = new IOServer(server, {
       cors: {
-         origin: [envConfig.FRONTEND_URL, "http://localhost:3000"],
+         origin: [
+            envConfig.FRONTEND_URL,
+            "https://upwise-edu.vercel.app",
+            "http://localhost:3000",
+         ],
          credentials: true,
       },
    });

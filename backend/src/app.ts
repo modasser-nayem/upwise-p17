@@ -13,12 +13,21 @@ app.use(express.json());
 
 app.use(
    cors({
-      origin: [envConfig.FRONTEND_URL, "http://localhost:3000"],
+      origin: [
+         envConfig.FRONTEND_URL,
+         "https://upwise-edu.vercel.app",
+         "http://localhost:3000",
+      ],
       credentials: true,
    })
 );
 
 app.use("/api/v1", routes);
+
+// Root route
+app.get("/", (req, res) => {
+   res.send("Server is Running");
+});
 
 //not found route handler
 app.use(notFoundRoute);
